@@ -80,6 +80,29 @@ def require_sender(
     admin_key = os.getenv("ADMIN_KEY")
     sender_key = os.getenv("SENDER_KEY")
 
+    if check_key(x_admin_key, admin_key):
+        return "admin"
+
+    if check_key(x_api_key, sender_key):
+        return "sender"
+
+    if not x_api_key and not x_admin_key:
+        public_access = os.getenv(
+            "PUBLIC_SENDER_ACCESS",
+            "true"
+        ).strip().lower() in ("1", "true", "yes", "on")
+
+        if public_access:
+            return "sender"
+
+        raise HTTPException(
+            status_code=401,
+            detail={
+                "error": "missing_api_key",
+                "detail": "An API key is required"
+            }
+        )
+
     if not admin_key and not sender_key:
         raise HTTPException(
             status_code=503,
@@ -89,21 +112,6 @@ def require_sender(
             }
         )
 
-    if not x_api_key and not x_admin_key:
-        raise HTTPException(
-            status_code=401,
-            detail={
-                "error": "missing_api_key",
-                "detail": "An API key is required"
-            }
-        )
-
-    if check_key(x_admin_key, admin_key):
-        return "admin"
-
-    if check_key(x_api_key, sender_key):
-        return "sender"
-
     raise HTTPException(
         status_code=403,
         detail={
@@ -111,8 +119,6 @@ def require_sender(
             "detail": "The API key is incorrect"
         }
     )
-
-
 def require_admin(
     x_api_key: str | None = Header(
         default=None,
