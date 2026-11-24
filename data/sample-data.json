@@ -1,0 +1,15 @@
+{
+  "providers": [
+    {"name": "mailfast", "channel": "email", "priority": 1, "fail_rate": 0.03, "outage": false},
+    {"name": "postbird", "channel": "email", "priority": 2, "fail_rate": 0.03, "outage": false},
+    {"name": "smsly", "channel": "sms", "priority": 1, "fail_rate": 0.03, "outage": false},
+    {"name": "textgo", "channel": "sms", "priority": 2, "fail_rate": 0.03, "outage": false}
+  ],
+  "messages": [
+    {"channel": "email", "category": "transactional", "recipient": "ritu@shop.example", "subject": "Order KK-20931 confirmed", "body": "Hi Ritu, your order is confirmed."},
+    {"channel": "sms", "category": "transactional", "recipient": "+919812345678", "subject": null, "body": "Your KiranaKart delivery OTP is 482913. Valid for 10 minutes."},
+    {"channel": "email", "category": "marketing", "recipient": "neha@shop.example", "subject": "Diwali sale: 20% off sweets", "body": "The Diwali sale starts today."},
+    {"channel": "email", "category": "transactional", "recipient": "asha@bounce.example", "subject": "Order KK-20932 confirmed", "body": "Bounce demo: no such mailbox."},
+    {"channel": "sms", "category": "marketing", "recipient": "+919800000123", "subject": null, "body": "Fresh mangoes are back! Order today on KiranaKart."}
+  ]
+}
