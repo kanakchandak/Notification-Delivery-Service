@@ -218,7 +218,7 @@ async def http_error_handler(request, exc):
 
 @app.get("/")
 def home():
-    return FileResponse(STATIC_DIR / "index.html")
+    return FileResponse(STATIC_DIR / "send.html")
 
 
 @app.get("/health")
