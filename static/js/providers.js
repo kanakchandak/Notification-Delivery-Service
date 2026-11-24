@@ -159,7 +159,7 @@ async function loadWorkerStatus() {
 
 async function updateWorker(paused) {
     try {
-        await sendData("/api/worker", "PATCH", { paused });
+        await sendData("/api/worker", "PATCH", { paused }, "admin");
         showMessage(paused ? "Worker paused." : "Worker resumed.");
         loadWorkerStatus();
     } catch (error) {
@@ -169,7 +169,7 @@ async function updateWorker(paused) {
 
 async function runWorkerTick() {
     try {
-        const result = await sendData("/api/worker/tick", "POST");
+        const result = await sendData("/api/worker/tick", "POST", null, "admin");
         showMessage("Tick completed. Processed: " + result.processed);
         loadWorkerStatus();
     } catch (error) {
