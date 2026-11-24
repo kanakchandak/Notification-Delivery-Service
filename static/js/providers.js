@@ -126,10 +126,7 @@ async function saveProvider(name) {
     const outage = document.getElementById("outage-" + name).checked;
 
     try {
-        await sendData("/api/providers/" + name, "PATCH", {
-            fail_rate: failRate,
-            outage: outage
-        });
+        await sendData("/api/providers/" + name, "PATCH", { fail_rate: failRate, outage: outage }, "admin");
 
         showMessage(name + " settings updated successfully.");
         loadProviders();
