@@ -9,9 +9,9 @@ DakGhar is a mock email and SMS notification delivery service built with FastAPI
 3. Double-click `start.bat`.
 4. On the first run, wait while Python creates the virtual environment and installs packages.
 5. Open `http://127.0.0.1:8000` in your browser.
-6. When the app asks, enter the API key from the local `.env` file. Choose `sender` for normal viewing/sending or `admin` for provider and worker controls.
+6. Open the app. Public sender access is enabled by default, so no sender key is needed. The admin key is requested only when using protected provider or worker controls.
 
-The first run creates a local `.env` file with randomly generated keys. Open that file if you need to see or change the keys. The browser stores the key only in `sessionStorage` for the current tab. Use **Change API key** in the navigation to switch credentials.
+The first run creates a local `.env` file with randomly generated keys. Public sender access is enabled by default through `PUBLIC_SENDER_ACCESS=true`. The browser requests the admin key only when an admin-only action is selected; it is stored in `sessionStorage` for the current tab.
 
 ## Run manually
 
@@ -21,7 +21,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-Copy `.env.example` to `.env`, replace both values with long random keys, then run:
+Copy `.env.example` to `.env`, replace `ADMIN_KEY` and `SENDER_KEY` with long random keys, keep `PUBLIC_SENDER_ACCESS=true` for key-free sender access, then run:
 
 ```bash
 uvicorn main:app --host 127.0.0.1 --port 8000 --workers 1
@@ -31,9 +31,10 @@ Open http://127.0.0.1:8000. Use one Uvicorn worker because the background worker
 
 ## API roles
 
-- `X-Api-Key` using `SENDER_KEY`: create and inspect messages, providers, worker status, and fake inbox.
+- Public sender access (enabled by `PUBLIC_SENDER_ACCESS=true`): create and inspect messages, providers, worker status, and fake inbox without a key.
+- `X-Api-Key` using `SENDER_KEY`: optional keyed sender access when public sender access is disabled.
 - `X-Admin-Key` using `ADMIN_KEY`: sender permissions plus provider configuration, worker controls, manual retry, and demo reset.
-- Missing credentials return 401; invalid credentials return 403. Admin-only operations reject sender-only credentials.
+- Admin-only operations always require `X-Admin-Key` using `ADMIN_KEY`; public sender access does not grant admin permissions. Set `PUBLIC_SENDER_ACCESS=false` to require `SENDER_KEY` for sender endpoints.
 
 ## Message rules
 
